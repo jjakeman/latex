@@ -77,7 +77,9 @@ bottom=3.0cm]{geometry}
   \rule{\textwidth}{1pt}\par
 {\color{darkblue}Correspondence:}\par 
 {\@corauthor\par \@coremail}\\\\
+\ifx\@funding\@notempty
 {\color{darkblue}Disclosure:}\par \@funding\\\\
+\fi
 {\color{darkblue}Keywords:}\par \@keywords\par
 \rule{\textwidth}{1pt}\par
 \end{minipage}
@@ -163,6 +165,11 @@ enhanced, drop shadow,
   \null
   \vskip 2em%
   \begin{center}%
+    \ifmy@logo
+    \def\headerbarwidth{0.525\paperwidth}
+\else
+\def\headerbarwidth{1\textwidth}
+\fi
 
 \begin{tikzpicture}[remember picture,overlay]
   \coordinate [below=3.5cm] (midpoint) at (current page.north);%jj
@@ -171,21 +178,28 @@ enhanced, drop shadow,
 anchor=base,
 rectangle, left color=darkblue, right color =darkblue!40,
 text = white,
-minimum width=0.525\paperwidth,%jj
+minimum width=\headerbarwidth,%jj
 minimum height=3.1cm,%jj
-text width=0.525\paperwidth] at (midpoint) {};
+text width=\headerbarwidth] at (midpoint) {};
 \node [name=colourbar,
 anchor=base,
 rectangle,left color=darkblue, right color=lightblue!70,
 shading = axis,shading angle=45,
 text = white,
-minimum width=0.525\paperwidth,%%jj
+minimum width=\headerbarwidth,%%jj
 minimum height=2.8cm,%%jj
-text width=0.525\paperwidth,] at (midpoint) {};
+text width=\headerbarwidth,] at (midpoint) {};
 \fi
-\node [below=-.75cm of midpoint, name=reportname,text = white, text width=0.8\paperwidth, align=flush center]  {
+\ifx\@website\@empty
+\def\reportnamegap{-.25cm}
+\def\reportnamefontsize{\Huge}
+\else
+\def\reportnamegap{-0.75cm}
+\def\reportnamefontsize{\LARGE}
+\fi
+\node [below=\reportnamegap of midpoint, name=reportname,text = white, text width=0.8\paperwidth, align=flush center]  {
   %{\LARGE\bf \color{titlepagetext}\@title}%
-  \textsc{\LARGE\color{titlepagetext} \@reportname}%
+  \textsc{\reportnamefontsize\color{titlepagetext} \@reportname}%
   %bf does not work with textsc it stops textsc from being applied
 };
 \node [below=.25cm of reportname, name=website,text = white, text width=0.8\paperwidth, align=flush center]  {
